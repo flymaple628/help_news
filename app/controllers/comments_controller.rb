@@ -1,17 +1,7 @@
-class MessagesController < ApplicationController
-	#before_action :message_one
-	before_action :message_all
-	#Get /message/
-	def index
-		if params[:id]
-			message_one
-		else
-			@message=Message.new
-		end
+class CommentsController < ApplicationController
+	before_action :message_one
+	# before_action :message_all
 
-		@messages=@messages.where(:tag_id=>params[:tag])
-
-	end
 
 	#get /message/:id
 	def show
@@ -29,16 +19,16 @@ class MessagesController < ApplicationController
 	end
 	#post /message/
 	def create
-		@message=Message.new(message_params)
-		@message.save
-		redirect_to messages_path
+		@comment=@message.comments.new(comments_params)
+		@comment.save
+		redirect_to message_path(:id=>@message.id)
 	end
 
 	#patch /message/:id
 	def update
 		message_one
-		if @message.update(message_params)
-			redirect_to messages_path
+		if @comment.comments.update(comments_params)
+			redirect_to message_path(:id=>@message.id)
 		else
 			flash[:alert]="update error"
 			render :action=>:index
@@ -53,14 +43,15 @@ class MessagesController < ApplicationController
 	end
 
 	private
-	def message_params
-		params.require(:message).permit(:title,:conten,:tag_id)
+	def comments_params
+		params.require(:comment).permit(:comment)
 	end
 	def message_one
-		@message=Message.find(params[:id])
+		@message=Message.find(params[:message_id])
 	end
 
 	def message_all
 		@messages=Message.all
 	end
 end
+

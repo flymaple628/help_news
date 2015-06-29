@@ -1,0 +1,24 @@
+<div class="main">
+	<div class="message">
+		<div class="title"><%=@message.title%></div>
+		<div class="content"><%=@message.content%></div>
+		<div class="tag"><%=@message.tag%></div>
+	</div>
+	<div class="comment">
+		<div class="commnet_list">
+			<% @comments.each do |c|%>
+				<span class="comment"><%=c.comment%></span>
+				<span class="user"><%#=c.user_id%></span>
+				<span class="edit"><%= link_to "edit", message_path(@message.id,:cid=>c.id) %></span>
+				<span class="destroy"><%= link_to "delete", message_path(@message.id,:cid=>c.id),:method=>:delete %></span>
+			<% end %>
+		</div>
+		<div class="comment_from">
+			<%=form_for @comment ,:url=>message_comments_path(@message,@comment.id) do |f|%>
+			<div class="tag"></div>
+			<div class="content"><%=f.label :comment%><%=f.text_area :comment%></div>
+			<div class="submit"><%=f.submit :create%></div>
+			<% end %>
+		</div>
+	</div>
+</div>

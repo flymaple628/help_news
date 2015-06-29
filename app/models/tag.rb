@@ -1,3 +1,3 @@
 class Tag < ActiveRecord::Base
-	has_many :news
+	has_many :message
 end
